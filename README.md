@@ -1,7 +1,7 @@
 # MediMind — Intelligent Medication Reminder System
 
-<p align="center">
-  <img src="/app-icon.svg?v=2" alt="MediMind logo" width="180" />
+<p>
+  <img src="./public/app-icon.svg" alt="MediMind app icon" />
 </p>
 
 [![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://smart-medicine-reminder-system.vercel.app)  [![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
