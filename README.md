@@ -1,10 +1,10 @@
 # MediMind — Intelligent Medication Reminder System
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/9d4a9f0b-2f71-4ef7-9d9f-8e4f4a6b7a1b" alt="MediMind logo" width="180" />
+  <img src="/app-icon.svg?v=2" alt="MediMind logo" width="180" />
 </p>
 
-[![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://smart-medicine-reminder-system.vercel.app)  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+[![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://smart-medicine-reminder-system.vercel.app)  [![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 
 Modern, cross-platform medication adherence system combining a React + TypeScript web dashboard with a lightweight Python BLE gateway and Arduino firmware for an IoT smart pillbox.
 
@@ -35,7 +35,7 @@ Live demo: https://smart-medicine-reminder-system.vercel.app
 
 ## About
 
-MediMind is an intelligent medication reminder and adherence analytics platform that pairs a web-based dashboard with a physical IoT smart pillbox. The system supports voice reminders, accessibility features, and device connectivity to help users stay on track with medication schedules.
+MediMind is an intelligent medication reminder and adherence analytics platform that pairs a web-based dashboard with a physical IoT smart pillbox. The system supports voice reminders, accessibility features, and simple local device integration to help patients and caregivers manage medication schedules reliably.
 
 This repository contains three main components:
 1. Web dashboard (Vite + React + TypeScript)
@@ -66,7 +66,7 @@ This repository contains three main components:
 
 ## System Architecture
 
-The frontend communicates with a local Python BLE gateway via HTTP/websockets. The gateway connects to the Arduino-based pillbox over a serial/Bluetooth link and relays hardware events and commands.
+The frontend communicates with a local Python BLE gateway via HTTP/websockets. The gateway connects to the Arduino-based pillbox over a serial/Bluetooth link and relays hardware events and commands between the device and the dashboard.
 
 (High-level)
 
