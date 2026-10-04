@@ -222,7 +222,7 @@ const ProfileScreen = ({
 
   return (
     <div className="flex-1 overflow-y-auto bg-page">
-      <div className="hero-surface relative overflow-hidden rounded-b-[2.5rem] bg-hero px-5 pb-16 pt-5 text-primary-foreground sm:px-6">
+      <div className="hero-surface relative overflow-hidden rounded-b-[2.5rem] md:rounded-3xl md:mx-auto md:w-full md:max-w-5xl lg:max-w-6xl md:mt-4 bg-hero px-5 pb-16 md:pb-8 pt-5 md:pt-6 text-primary-foreground sm:px-6 md:px-8 shadow-sm">
         <div className="mx-auto w-full max-w-xl">
           <div className="relative flex items-center justify-between gap-3">
             <button
@@ -260,12 +260,15 @@ const ProfileScreen = ({
         </div>
       </div>
 
-      <div className="relative z-10 -mt-10 space-y-5 px-4 pb-28 sm:px-5">
-        <div className="mx-auto w-full max-w-xl space-y-5">
-        <Card>
-          <CardHeader
-            Icon={User}
-            title={copy.userInfo}
+      <div className="relative z-10 -mt-10 md:mt-6 px-4 pb-28 md:pb-12 sm:px-5 md:px-8">
+        <div className="mx-auto w-full max-w-xl md:max-w-5xl lg:max-w-6xl">
+          <div className="md:grid md:grid-cols-12 md:gap-6 md:items-start space-y-5 md:space-y-0">
+            {/* Left Column on desktop */}
+            <div className="md:col-span-5 lg:col-span-4 space-y-5">
+              <Card>
+                <CardHeader
+                  Icon={User}
+                  title={copy.userInfo}
             action={
               <button
                 onClick={() => (editing ? handleSave() : setEditing(true))}
@@ -303,6 +306,10 @@ const ProfileScreen = ({
             </ul>
           )}
         </Card>
+            </div>
+
+            {/* Right Column on desktop */}
+            <div className="md:col-span-7 lg:col-span-8 space-y-5">
 
         <Card>
           <CardHeader Icon={Pencil} title={language === "ta" ? copy.settings : "Account"} />
@@ -467,6 +474,8 @@ const ProfileScreen = ({
             </Button>
           </div>
         </Card>
+        </div>
+          </div>
         </div>
       </div>
 

@@ -281,7 +281,9 @@ const SettingsScreen = ({
   return (
     <div ref={screenRef} className="flex-1 overflow-y-auto bg-page text-foreground">
       <ScreenHeader title={copy.title} subtitle={copy.subtitle} />
-      <div className="mx-auto w-full max-w-xl space-y-4 px-5 pb-28 sm:px-6">
+      <div className="mx-auto w-full max-w-xl md:max-w-5xl lg:max-w-6xl space-y-4 px-5 pb-28 md:pb-12 sm:px-6 md:px-8">
+        <div className="md:grid md:grid-cols-12 md:gap-6 md:items-start space-y-4 md:space-y-0">
+          <div className="md:col-span-6 lg:col-span-6 space-y-4">
         <section className="grid grid-cols-2 gap-3">
           <StatusTile
             Icon={Pill}
@@ -517,7 +519,9 @@ const SettingsScreen = ({
           </DialogContent>
         </Dialog>
 
-        <Section title={language === "ta" ? "Course calendar" : "Course calendar"}>
+          </div>
+          <div className="md:col-span-6 lg:col-span-6 space-y-4">
+            <Section title={language === "ta" ? "Course calendar" : "Course calendar"}>
           <SmartScheduleCalendar
             language={language}
             schedules={smartSchedules}
@@ -583,10 +587,8 @@ const SettingsScreen = ({
             </div>
           </div>
         </Section>
-
-
-
-
+          </div>
+        </div>
       </div>
     </div>
   );

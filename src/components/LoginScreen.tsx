@@ -175,52 +175,61 @@ const LoginScreen = ({ language = "en", onLogin, onToggleLanguage }: LoginScreen
   };
 
   return (
-    <div className="flex-1 overflow-y-auto bg-page">
-      <div className="hero-surface relative overflow-hidden rounded-b-[2.5rem] bg-hero px-5 pb-20 pt-14 text-primary-foreground sm:px-6">
-        <div className="mx-auto w-full max-w-xl">
-          <div className="relative flex flex-wrap items-start justify-between gap-3">
-            <div className="flex min-w-0 items-center gap-3">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/20 shadow-glow backdrop-blur">
-                <Pill className="h-7 w-7" strokeWidth={2.4} />
+    <div className="flex-1 overflow-y-auto bg-page md:flex md:items-center md:justify-center md:p-6 lg:p-10">
+      <div className="w-full md:max-w-4xl lg:max-w-5xl md:grid md:grid-cols-12 md:rounded-3xl md:border md:border-border/60 md:bg-card md:shadow-float md:overflow-hidden">
+        {/* Left Side: Hero Brand Surface */}
+        <div className="hero-surface relative overflow-hidden rounded-b-[2.5rem] md:rounded-none bg-hero px-5 pb-20 pt-14 text-primary-foreground sm:px-6 md:col-span-5 lg:col-span-5 md:p-8 lg:p-10 md:flex md:flex-col md:justify-between">
+          <div>
+            <div className="relative flex flex-wrap items-start justify-between gap-3">
+              <div className="flex min-w-0 items-center gap-3">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/20 shadow-glow backdrop-blur overflow-hidden">
+                  <img src="/app-icon.png" alt="MediMind" className="h-full w-full object-cover" />
+                </div>
+                <div className="min-w-0">
+                  <h1 className="truncate text-2xl font-extrabold tracking-tight">MediMind</h1>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-primary-foreground/80">
+                    {copy.appTag}
+                  </p>
+                </div>
               </div>
-              <div className="min-w-0">
-                <h1 className="truncate text-2xl font-extrabold tracking-tight">MediMind</h1>
-                <p className="text-xs font-semibold uppercase tracking-widest text-primary-foreground/80">
-                  {copy.appTag}
-                </p>
-              </div>
+
+              <button
+                type="button"
+                onClick={onToggleLanguage}
+                className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full border border-white/20 bg-white/15 px-4 py-2 text-sm font-bold text-primary-foreground backdrop-blur transition-colors hover:bg-white/25 cursor-pointer"
+                aria-label="Toggle language"
+              >
+                <Languages className="h-4 w-4" strokeWidth={2.4} />
+                {copy.languageToggle}
+              </button>
             </div>
 
-            <button
-              type="button"
-              onClick={onToggleLanguage}
-              className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full border border-white/20 bg-white/15 px-4 py-2 text-sm font-bold text-primary-foreground backdrop-blur transition-colors hover:bg-white/25"
-              aria-label="Toggle language"
-            >
-              <Languages className="h-4 w-4" strokeWidth={2.4} />
-              {copy.languageToggle}
-            </button>
+            <h2 className="relative mt-8 break-words text-3xl font-extrabold leading-tight">
+              {copy.headlineTop}
+              <br />
+              <span className="text-primary-foreground/85">{copy.headlineBottom}</span>
+            </h2>
+
+            <div className="relative mt-5 flex flex-wrap gap-2">
+              <Badge Icon={Heart} label={copy.caring} />
+              <Badge Icon={ShieldCheck} label={copy.secure} />
+              <Badge Icon={Pill} label={copy.smartPillBox} />
+            </div>
           </div>
 
-          <h2 className="relative mt-8 break-words text-3xl font-extrabold leading-tight">
-            {copy.headlineTop}
-            <br />
-            <span className="text-primary-foreground/85">{copy.headlineBottom}</span>
-          </h2>
-
-          <div className="relative mt-5 flex flex-wrap gap-2">
-            <Badge Icon={Heart} label={copy.caring} />
-            <Badge Icon={ShieldCheck} label={copy.secure} />
-            <Badge Icon={Pill} label={copy.smartPillBox} />
+          <div className="hidden md:block pt-8 border-t border-white/15 mt-8">
+            <p className="text-xs text-primary-foreground/80 leading-relaxed font-medium">
+              {copy.localMode}
+            </p>
           </div>
         </div>
-      </div>
 
-      <div className="relative z-10 -mt-12 px-4 pb-12 sm:px-5">
-        <form
-          onSubmit={handleSubmit}
-          className="mx-auto w-full max-w-xl rounded-3xl border border-border/60 bg-card-gradient p-5 shadow-soft sm:p-6"
-        >
+        {/* Right Side: Form */}
+        <div className="relative z-10 -mt-12 md:mt-0 px-4 pb-12 sm:px-5 md:col-span-7 lg:col-span-7 md:p-8 lg:p-10 md:flex md:flex-col md:justify-center">
+          <form
+            onSubmit={handleSubmit}
+            className="mx-auto w-full max-w-xl md:max-w-none rounded-3xl md:rounded-none border md:border-none border-border/60 bg-card-gradient md:bg-transparent p-5 shadow-soft md:shadow-none sm:p-6 md:p-0"
+          >
           <div className="grid grid-cols-2 gap-2 rounded-2xl bg-secondary p-1">
             {(["signin", "signup"] as AuthMode[]).map((authMode) => (
               <button
@@ -320,8 +329,9 @@ const LoginScreen = ({ language = "en", onLogin, onToggleLanguage }: LoginScreen
                 : copy.signUpStart}
           </Button>
 
-          <p className="mt-4 text-center text-xs font-medium text-muted-foreground">{copy.localMode}</p>
+          <p className="mt-4 text-center text-xs font-medium text-muted-foreground md:hidden">{copy.localMode}</p>
         </form>
+      </div>
       </div>
     </div>
   );

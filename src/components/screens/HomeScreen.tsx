@@ -581,18 +581,18 @@ const HomeScreen = ({
   const initial = username.trim().charAt(0).toUpperCase() || "U";
 
   return (
-    <div className="flex-1 overflow-y-auto bg-page scrollbar-none">
-      <div className="hero-surface relative overflow-hidden rounded-b-[1.75rem] bg-hero px-4 pb-11 pt-3.5 text-primary-foreground sm:px-5">
-        <div className="mx-auto w-full max-w-xl">
+    <div className="flex-1 overflow-y-auto bg-page scrollbar-none md:pb-10">
+      <div className="hero-surface relative overflow-hidden rounded-b-[1.75rem] md:rounded-3xl md:mx-auto md:w-full md:max-w-5xl lg:max-w-6xl md:mt-4 bg-hero px-4 pb-11 md:pb-6 pt-3.5 md:pt-6 text-primary-foreground sm:px-5 md:px-8 shadow-sm">
+        <div className="mx-auto w-full max-w-xl md:max-w-none">
           <div className="relative flex items-center justify-between gap-3">
             <div className="min-w-0">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-primary-foreground/70">
+              <p className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-primary-foreground/70">
                 {greeting}
               </p>
-              <h1 className="mt-0.5 break-words text-lg font-extrabold leading-tight">{username}</h1>
+              <h1 className="mt-0.5 break-words text-lg md:text-2xl font-extrabold leading-tight">{username}</h1>
             </div>
 
-            <div className="flex shrink-0 items-center gap-1.5">
+            <div className="flex shrink-0 items-center gap-1.5 md:hidden">
               <button
                 onClick={onLogout}
                 className="flex h-8 w-8 items-center justify-center rounded-full bg-white/15 backdrop-blur transition-colors hover:bg-white/25"
@@ -604,180 +604,210 @@ const HomeScreen = ({
             </div>
           </div>
 
-          <div className="relative mt-2.5 flex items-center gap-2">
-            <span className="tabular-nums text-3xl font-extrabold leading-none tracking-tight">{timeStr}</span>
-            <span className="text-xs font-semibold text-primary-foreground/80 border-l border-white/20 pl-2">{dateStr}</span>
-          </div>
-
-          <div className="relative mt-3 flex flex-wrap items-center gap-1.5">
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/15 px-2.5 py-1 backdrop-blur">
-              <span className={cn("h-1.5 w-1.5 animate-soft-pulse rounded-full", statusConfig.dot)} />
-              <span className="text-[10px] font-bold leading-none">{statusConfig.label}</span>
-            </div>
-            <ConnPillButton
-              Icon={isNight ? Moon : Sun}
-              label={isNight ? copy.theme.night : copy.theme.day}
-              connected={true}
-              onClick={onToggleTheme}
-            />
-            <ConnPillButton
-              Icon={Languages}
-              label={copy.languageLabel}
-              connected={true}
-              onClick={onToggleLanguage}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="relative z-10 -mt-7 px-4 sm:px-5">
-        <div className="mx-auto w-full max-w-xl rounded-2xl border border-border/60 bg-card-gradient p-4 shadow-soft">
-          <div className="flex items-center justify-between gap-2">
-            <p className="flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-widest text-primary">
-              <Sparkles className="h-3.5 w-3.5" />
-              {copy.nextMedicine}
-            </p>
-            <span className="text-[10px] font-bold text-muted-foreground">{featuredReminder.contextLabel}</span>
-          </div>
-
-          <div className="mt-2.5 flex items-center gap-3">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-hero shadow-glow">
-              <Pill className="h-5.5 w-5.5 text-primary-foreground" strokeWidth={2.2} />
+          <div className="relative mt-2.5 md:mt-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <span className="tabular-nums text-3xl md:text-4xl font-extrabold leading-none tracking-tight">{timeStr}</span>
+              <span className="text-xs md:text-sm font-semibold text-primary-foreground/80 border-l border-white/20 pl-2">{dateStr}</span>
             </div>
 
-            <div className="min-w-0 flex-1">
-              <h2 className="break-words text-lg font-extrabold leading-tight text-foreground">{featuredReminder.name}</h2>
-              <p className="mt-0.5 break-words text-xs font-semibold text-muted-foreground">{featuredReminder.dosage}</p>
-            </div>
-          </div>
-
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            <Chip Icon={Clock} label={featuredReminder.time} />
-            {featuredReminder.withFood && <Chip Icon={Utensils} label={copy.withFood} />}
-          </div>
-
-          <div className="mt-3.5">
-            <Button
-              size="sm"
-              onClick={() => {
-                setStatus("taken");
-                if (nextMedicineSchedule?.schedule.id) {
-                  onTrackDose(nextMedicineSchedule.schedule.id, "taken");
-                }
-                onMarkSmartReminderTaken?.();
-                toast.success(copy.markedAsTaken, {
-                  description: `${featuredReminder.name} - ${featuredReminder.dosage}`,
-                });
-              }}
-              disabled={status === "taken"}
-              className={cn(
-                "h-auto min-h-10 w-full whitespace-normal rounded-xl px-4 py-2 text-center text-xs font-bold leading-5 shadow-soft transition-all active:scale-[0.98]",
-                status === "taken"
-                  ? "bg-success/20 text-success border border-success/30 cursor-default"
-                  : "bg-success text-success-foreground hover:bg-success/90"
-              )}
-            >
-              <CheckCircle2 className="mr-1.5 h-4.5 w-4.5" strokeWidth={2.5} />
-              {status === "taken" ? copy.markedAsTaken : copy.markAsTaken}
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-3 px-4 sm:px-5">
-        <div className="mx-auto grid w-full max-w-xl grid-cols-3 gap-2">
-          <Stat
-            Icon={CheckCircle2}
-            label={copy.stats.today}
-            value={`${todayTaken}/${todayTrackedDoses.length}`}
-            tone="primary"
-            onClick={() => announceStatButton(copy.stats.today, "today")}
-          />
-          <Stat
-            Icon={TrendingUp}
-            label={copy.stats.week}
-            value={`${weekPercent}%`}
-            tone="success"
-            onClick={() => announceStatButton(copy.stats.week, "week")}
-          />
-          <Stat
-            Icon={Flame}
-            label={copy.stats.streak}
-            value={`${currentStreak}d`}
-            tone="warning"
-            onClick={() => announceStatButton(copy.stats.streak, "streak")}
-          />
-        </div>
-      </div>
-
-      <div className="mt-2.5 px-4 sm:px-5">
-        <div className="mx-auto w-full max-w-xl flex items-center justify-between gap-1 rounded-2xl border border-border/40 bg-card/65 px-3 py-2 text-[10px] font-bold text-muted-foreground shadow-sm">
-          <button
-            type="button"
-            onClick={() => announceStatButton(copy.stats.medicines, "medicines")}
-            className="flex items-center gap-1 hover:text-primary transition-colors"
-          >
-            <Pill className="h-3.5 w-3.5 text-primary" />
-            <span>{totalMeds} {language === "ta" ? "மருந்துகள்" : "Medicines"}</span>
-          </button>
-          <span className="h-3 w-px bg-border/80" />
-          <button
-            type="button"
-            onClick={() => announceStatButton(copy.stats.lowStock, "lowStock")}
-            className={cn("flex items-center gap-1 transition-colors hover:text-warning", lowStockMeds.length > 0 && "text-warning")}
-          >
-            <Package className="h-3.5 w-3.5" />
-            <span>{lowStockMeds.length} {language === "ta" ? "குறைந்த இருப்பு" : "Low stock"}</span>
-          </button>
-          <span className="h-3 w-px bg-border/80" />
-          <button
-            type="button"
-            onClick={() => announceStatButton(copy.stats.expiring, "expiring")}
-            className={cn("flex items-center gap-1 transition-colors hover:text-destructive", expiringMeds.length > 0 && "text-destructive")}
-          >
-            <ShieldAlert className="h-3.5 w-3.5" />
-            <span>{expiringMeds.length} {language === "ta" ? "காலாவதி" : "Expiring"}</span>
-          </button>
-        </div>
-      </div>
-
-      <div className="mt-2.5 px-4 sm:px-5">
-        <div className="mx-auto w-full max-w-xl">
-          <button
-            type="button"
-            onClick={() => setDetail("doseHistory")}
-            className="w-full rounded-2xl border border-border/60 bg-card p-3 text-left shadow-card transition-all hover:shadow-soft active:scale-[0.99]"
-          >
-            <MiniBars
-              data={weeklyTrend}
-              label={language === "ta" ? "வார வரைபடம்" : "Weekly graph"}
-              badge={`7 ${language === "ta" ? "நாட்கள்" : "days"}`}
-            />
-          </button>
-        </div>
-      </div>
-
-      <div className="mt-2.5 px-4 pb-4 sm:px-5">
-        <div className="mx-auto grid w-full max-w-xl gap-2">
-          <section className="rounded-2xl border border-border/60 bg-card p-3 shadow-card">
-            <div className="mb-2.5 flex items-center justify-between gap-3">
-              <div>
-                <h2 className="text-xs font-extrabold text-foreground">
-                  {language === "ta" ? "இன்றைய சுருக்கம்" : "Today overview"}
-                </h2>
-                <p className="mt-0.5 text-[10px] font-semibold text-muted-foreground">
-                  {language === "ta" ? "மருந்து நிலை மற்றும் வார முன்னேற்றம்" : "Dose status and weekly progress"}
-                </p>
+            <div className="flex flex-wrap items-center gap-1.5">
+              <div className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/15 px-2.5 py-1 backdrop-blur">
+                <span className={cn("h-1.5 w-1.5 animate-soft-pulse rounded-full", statusConfig.dot)} />
+                <span className="text-[10px] md:text-xs font-bold leading-none">{statusConfig.label}</span>
               </div>
-              <ProgressBadge value={todayPercent} />
+              <ConnPillButton
+                Icon={isNight ? Moon : Sun}
+                label={isNight ? copy.theme.night : copy.theme.day}
+                connected={true}
+                onClick={onToggleTheme}
+              />
+              <ConnPillButton
+                Icon={Languages}
+                label={copy.languageLabel}
+                connected={true}
+                onClick={onToggleLanguage}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mx-auto w-full max-w-xl md:max-w-5xl lg:max-w-6xl px-4 sm:px-5 md:px-8 md:mt-6">
+        <div className="md:grid md:grid-cols-12 md:gap-6 md:items-start space-y-3 md:space-y-0">
+          {/* Main Column on desktop (8 cols on lg, 7 cols on md) */}
+          <div className="md:col-span-7 lg:col-span-8 space-y-3 md:space-y-5">
+            {/* Next Medicine Card */}
+            <div className="relative z-10 -mt-7 md:mt-0">
+              <div className="w-full rounded-2xl border border-border/60 bg-card-gradient p-4 md:p-5 shadow-soft">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="flex items-center gap-1 text-[10px] md:text-xs font-extrabold uppercase tracking-widest text-primary">
+                    <Sparkles className="h-3.5 w-3.5 md:h-4 md:w-4" />
+                    {copy.nextMedicine}
+                  </p>
+                  <span className="text-[10px] md:text-xs font-bold text-muted-foreground">{featuredReminder.contextLabel}</span>
+                </div>
+
+                <div className="mt-2.5 md:mt-4 flex items-center gap-3">
+                  <div className="flex h-11 w-11 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl bg-hero shadow-glow">
+                    <Pill className="h-5.5 w-5.5 md:h-6 md:w-6 text-primary-foreground" strokeWidth={2.2} />
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <h2 className="break-words text-lg md:text-xl font-extrabold leading-tight text-foreground">{featuredReminder.name}</h2>
+                    <p className="mt-0.5 break-words text-xs md:text-sm font-semibold text-muted-foreground">{featuredReminder.dosage}</p>
+                  </div>
+                </div>
+
+                <div className="mt-3 md:mt-4 flex flex-wrap gap-1.5">
+                  <Chip Icon={Clock} label={featuredReminder.time} />
+                  {featuredReminder.withFood && <Chip Icon={Utensils} label={copy.withFood} />}
+                </div>
+
+                <div className="mt-3.5 md:mt-5">
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      setStatus("taken");
+                      if (nextMedicineSchedule?.schedule.id) {
+                        onTrackDose(nextMedicineSchedule.schedule.id, "taken");
+                      }
+                      onMarkSmartReminderTaken?.();
+                      toast.success(copy.markedAsTaken, {
+                        description: `${featuredReminder.name} - ${featuredReminder.dosage}`,
+                      });
+                    }}
+                    disabled={status === "taken"}
+                    className={cn(
+                      "h-auto min-h-10 md:min-h-11 w-full whitespace-normal rounded-xl px-4 py-2 text-center text-xs md:text-sm font-bold leading-5 shadow-soft transition-all active:scale-[0.98] cursor-pointer",
+                      status === "taken"
+                        ? "bg-success/20 text-success border border-success/30 cursor-default"
+                        : "bg-success text-success-foreground hover:bg-success/90"
+                    )}
+                  >
+                    <CheckCircle2 className="mr-1.5 h-4.5 w-4.5" strokeWidth={2.5} />
+                    {status === "taken" ? copy.markedAsTaken : copy.markAsTaken}
+                  </Button>
+                </div>
+              </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-1.5">
-              <MetricPill label={copy.details.taken} value={todayTaken} tone="success" />
-              <MetricPill label={copy.details.missed} value={todayMissed} tone="destructive" />
-              <MetricPill label={language === "ta" ? "மீதம்" : "Left"} value={todayLeft} tone="warning" />
+            {/* Weekly Trend Graph */}
+            <div className="w-full">
+              <button
+                type="button"
+                onClick={() => setDetail("doseHistory")}
+                className="w-full rounded-2xl border border-border/60 bg-card p-3 md:p-4 text-left shadow-card transition-all hover:shadow-soft active:scale-[0.99] cursor-pointer"
+              >
+                <MiniBars
+                  data={weeklyTrend}
+                  label={language === "ta" ? "வார வரைபடம்" : "Weekly graph"}
+                  badge={`7 ${language === "ta" ? "நாட்கள்" : "days"}`}
+                />
+              </button>
             </div>
-          </section>
+
+            {/* Today Overview */}
+            <div className="w-full">
+              <section className="rounded-2xl border border-border/60 bg-card p-3 md:p-5 shadow-card">
+                <div className="mb-2.5 md:mb-4 flex items-center justify-between gap-3">
+                  <div>
+                    <h2 className="text-xs md:text-sm font-extrabold text-foreground">
+                      {language === "ta" ? "இன்றைய சுருக்கம்" : "Today overview"}
+                    </h2>
+                    <p className="mt-0.5 text-[10px] md:text-xs font-semibold text-muted-foreground">
+                      {language === "ta" ? "மருந்து நிலை மற்றும் வார முன்னேற்றம்" : "Dose status and weekly progress"}
+                    </p>
+                  </div>
+                  <ProgressBadge value={todayPercent} />
+                </div>
+
+                <div className="grid grid-cols-3 gap-2">
+                  <MetricPill label={copy.details.taken} value={todayTaken} tone="success" />
+                  <MetricPill label={copy.details.missed} value={todayMissed} tone="destructive" />
+                  <MetricPill label={language === "ta" ? "மீதம்" : "Left"} value={todayLeft} tone="warning" />
+                </div>
+              </section>
+            </div>
+          </div>
+
+          {/* Secondary Column on desktop (4 cols on lg, 5 cols on md) */}
+          <div className="md:col-span-5 lg:col-span-4 space-y-3 md:space-y-4">
+            {/* Quick 3-Stat Overview */}
+            <div className="grid w-full grid-cols-3 gap-2">
+              <Stat
+                Icon={CheckCircle2}
+                label={copy.stats.today}
+                value={`${todayTaken}/${todayTrackedDoses.length}`}
+                tone="primary"
+                onClick={() => announceStatButton(copy.stats.today, "today")}
+              />
+              <Stat
+                Icon={TrendingUp}
+                label={copy.stats.week}
+                value={`${weekPercent}%`}
+                tone="success"
+                onClick={() => announceStatButton(copy.stats.week, "week")}
+              />
+              <Stat
+                Icon={Flame}
+                label={copy.stats.streak}
+                value={`${currentStreak}d`}
+                tone="warning"
+                onClick={() => announceStatButton(copy.stats.streak, "streak")}
+              />
+            </div>
+
+            {/* Stock & Expiry Bar */}
+            <div className="w-full flex items-center justify-between gap-1 rounded-2xl border border-border/40 bg-card/65 px-3 py-2.5 text-[10px] md:text-xs font-bold text-muted-foreground shadow-sm">
+              <button
+                type="button"
+                onClick={() => announceStatButton(copy.stats.medicines, "medicines")}
+                className="flex items-center gap-1 hover:text-primary transition-colors cursor-pointer"
+              >
+                <Pill className="h-3.5 w-3.5 text-primary" />
+                <span>{totalMeds} {language === "ta" ? "மருந்துகள்" : "Medicines"}</span>
+              </button>
+              <span className="h-3 w-px bg-border/80" />
+              <button
+                type="button"
+                onClick={() => announceStatButton(copy.stats.lowStock, "lowStock")}
+                className={cn("flex items-center gap-1 transition-colors hover:text-warning cursor-pointer", lowStockMeds.length > 0 && "text-warning")}
+              >
+                <Package className="h-3.5 w-3.5" />
+                <span>{lowStockMeds.length} {language === "ta" ? "குறைந்த இருப்பு" : "Low stock"}</span>
+              </button>
+              <span className="h-3 w-px bg-border/80" />
+              <button
+                type="button"
+                onClick={() => announceStatButton(copy.stats.expiring, "expiring")}
+                className={cn("flex items-center gap-1 transition-colors hover:text-destructive cursor-pointer", expiringMeds.length > 0 && "text-destructive")}
+              >
+                <ShieldAlert className="h-3.5 w-3.5" />
+                <span>{expiringMeds.length} {language === "ta" ? "காலாவதி" : "Expiring"}</span>
+              </button>
+            </div>
+
+            {/* Quick Dose History shortcut on desktop */}
+            <div className="hidden md:block rounded-2xl border border-border/60 bg-card p-4 shadow-card">
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <p className="text-xs font-extrabold uppercase tracking-wider text-foreground">
+                  {language === "ta" ? "மருந்து வரலாறு" : "Dose History"}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setDetail("doseHistory")}
+                  className="text-xs font-bold text-primary hover:underline cursor-pointer"
+                >
+                  {language === "ta" ? "காண்க" : "View all"}
+                </button>
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                {language === "ta"
+                  ? "உங்கள் சமீபத்திய மருந்து நேரங்கள் மற்றும் விடுபட்ட அளவுகளை சரிபார்க்கவும்."
+                  : "Review recent medicine administration times, missed doses, and daily trends."}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 

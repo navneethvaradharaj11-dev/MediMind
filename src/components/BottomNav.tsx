@@ -36,7 +36,7 @@ const BottomNav = ({ active, onChange, language = "en" }: BottomNavProps) => {
   const labels = navLabels[language];
 
   return (
-    <nav className="relative z-10 border-t border-border bg-card/95 px-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)] pt-1.5 backdrop-blur-md">
+    <nav className="relative z-10 border-t border-border bg-card/95 px-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)] pt-1.5 backdrop-blur-md md:hidden">
       <ul className="grid grid-cols-4 gap-1">
         {items.map(({ id, Icon }) => {
           const isActive = active === id;

@@ -1,6 +1,7 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState, startTransition, type TouchEvent } from "react";
 import PhoneFrame from "@/components/PhoneFrame";
 import BottomNav, { Screen } from "@/components/BottomNav";
+import DesktopNav from "@/components/DesktopNav";
 import ReminderAlert, { MedicineTimeReminder } from "@/components/ReminderAlert";
 import LoginScreen from "@/components/LoginScreen";
 import { AppLanguage } from "@/lib/appLanguage";
@@ -1404,6 +1405,15 @@ const Index = () => {
 
   return (
     <PhoneFrame>
+      <DesktopNav
+        active={screen}
+        onChange={setScreen}
+        language={language}
+        onToggleLanguage={() => setLanguage((current) => (current === "en" ? "ta" : "en"))}
+        userProfile={userProfile}
+        onLogout={handleLogout}
+        alertsCount={notificationEvents.length}
+      />
       <Suspense fallback={<ScreenLoading />}>
         <div
           className="relative flex min-h-0 flex-1 flex-col overflow-hidden"

@@ -68,9 +68,11 @@ const NotificationsScreen = ({
   return (
     <div className="flex-1 overflow-y-auto bg-page">
       <ScreenHeader title={copy.title} subtitle={copy.subtitle} />
-      <div className="mx-auto w-full max-w-xl px-5 pb-28 sm:px-6">
+      <div className="mx-auto w-full max-w-xl md:max-w-5xl lg:max-w-6xl px-5 pb-28 md:pb-12 sm:px-6 md:px-8">
+        <div className="md:grid md:grid-cols-12 md:gap-6 md:items-start space-y-5 md:space-y-0">
         {notificationHistory.length > 0 && (
-          <section className="mb-5 rounded-2xl border border-border/60 bg-card p-4 shadow-card">
+          <div className="md:col-span-4 lg:col-span-4 md:sticky md:top-6">
+            <section className="mb-5 md:mb-0 rounded-2xl border border-border/60 bg-card p-4 shadow-card">
             <div className="mb-4 flex items-center justify-between gap-3">
               <div>
                 <h2 className="text-sm font-extrabold text-foreground">
@@ -103,8 +105,10 @@ const NotificationsScreen = ({
               })}
             </div>
           </section>
+          </div>
         )}
 
+        <div className={cn(notificationHistory.length > 0 ? "md:col-span-8 lg:col-span-8" : "md:col-span-12")}>
         {notificationHistory.length === 0 ? (
           <div className="rounded-3xl border border-border bg-card p-8 text-center shadow-card">
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-soft text-primary">
@@ -156,6 +160,8 @@ const NotificationsScreen = ({
             ))}
           </div>
         )}
+        </div>
+        </div>
       </div>
     </div>
   );
