@@ -36,3 +36,4 @@ share_for_claude/
 *.sw?
 *.apk
 *.png
+!public/app-icon.png
