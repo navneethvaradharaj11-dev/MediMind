@@ -37,3 +37,6 @@ share_for_claude/
 *.apk
 *.png
 !public/app-icon.png
+
+.vercel
+.env*
