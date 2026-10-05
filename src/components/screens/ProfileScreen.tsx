@@ -15,6 +15,8 @@ import {
   Type,
   Volume2,
   Music,
+  HeartPulse,
+  ShieldCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -222,20 +224,20 @@ const ProfileScreen = ({
 
   return (
     <div className="flex-1 overflow-y-auto bg-page">
-      <div className="hero-surface relative overflow-hidden rounded-b-[2.5rem] md:rounded-3xl md:mx-auto md:w-full md:max-w-5xl lg:max-w-6xl md:mt-4 bg-hero px-5 pb-16 md:pb-8 pt-5 md:pt-6 text-primary-foreground sm:px-6 md:px-8 shadow-sm">
-        <div className="mx-auto w-full max-w-xl">
+      <div className="hero-surface relative overflow-hidden rounded-b-[2.5rem] md:rounded-3xl md:mx-auto md:w-full md:max-w-6xl lg:max-w-7xl 2xl:max-w-[1440px] md:mt-4 bg-hero px-5 pb-16 md:pb-8 pt-5 md:pt-6 text-primary-foreground sm:px-6 md:px-8 lg:px-10 shadow-sm">
+        <div className="mx-auto w-full max-w-xl md:max-w-none">
           <div className="relative flex items-center justify-between gap-3">
             <button
               onClick={onBack}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/15 backdrop-blur hover:bg-white/25"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/15 backdrop-blur hover:bg-white/25 cursor-pointer"
               aria-label="Back"
             >
               <ArrowLeft className="h-5 w-5" strokeWidth={2.4} />
             </button>
-            <h1 className="min-w-0 break-words text-center text-base font-bold">{copy.title}</h1>
+            <h1 className="min-w-0 break-words text-center text-base md:text-lg font-bold">{copy.title}</h1>
             <button
               onClick={onLogout}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/15 backdrop-blur hover:bg-white/25"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/15 backdrop-blur hover:bg-white/25 cursor-pointer"
               aria-label={copy.signOut}
             >
               <LogOut className="h-4 w-4" strokeWidth={2.4} />
@@ -247,11 +249,11 @@ const ProfileScreen = ({
               {initial}
             </div>
             <div className="min-w-0 flex-1">
-              <h2 className="truncate text-2xl font-extrabold">{name}</h2>
-              <p className="break-words text-sm font-medium text-primary-foreground/80">
+              <h2 className="truncate text-2xl md:text-3xl font-extrabold">{name}</h2>
+              <p className="break-words text-sm md:text-base font-medium text-primary-foreground/80">
                 {copy.patient} - {ageValue}
               </p>
-              <div className="mt-2 inline-flex max-w-full items-center gap-1.5 rounded-full border border-white/20 bg-white/15 px-2.5 py-1 text-[11px] font-bold">
+              <div className="mt-2 inline-flex max-w-full items-center gap-1.5 rounded-full border border-white/20 bg-white/15 px-3 py-1 text-xs font-bold">
                 <IdCard className="h-3.5 w-3.5" />
                 {patientId}
               </div>
@@ -260,74 +262,132 @@ const ProfileScreen = ({
         </div>
       </div>
 
-      <div className="relative z-10 -mt-10 md:mt-6 px-4 pb-28 md:pb-12 sm:px-5 md:px-8">
-        <div className="mx-auto w-full max-w-xl md:max-w-5xl lg:max-w-6xl">
+      <div className="relative z-10 -mt-10 md:mt-6 px-4 pb-28 md:pb-12 sm:px-5 md:px-8 lg:px-10">
+        <div className="mx-auto w-full max-w-xl md:max-w-6xl lg:max-w-7xl 2xl:max-w-[1440px]">
           <div className="md:grid md:grid-cols-12 md:gap-6 md:items-start space-y-5 md:space-y-0">
             {/* Left Column on desktop */}
-            <div className="md:col-span-5 lg:col-span-4 space-y-5">
+            <div className="md:col-span-6 lg:col-span-6 space-y-5">
               <Card>
                 <CardHeader
                   Icon={User}
                   title={copy.userInfo}
-            action={
-              <button
-                onClick={() => (editing ? handleSave() : setEditing(true))}
-                className="inline-flex items-center gap-1 rounded-full bg-primary-soft px-2.5 py-1 text-xs font-bold text-primary"
-              >
-                <Pencil className="h-3 w-3" />
-                {editing ? copy.save : copy.edit}
-              </button>
-            }
-          />
+                  action={
+                    <button
+                      onClick={() => (editing ? handleSave() : setEditing(true))}
+                      className="inline-flex items-center gap-1 rounded-full bg-primary-soft px-2.5 py-1 text-xs font-bold text-primary cursor-pointer hover:bg-primary/20 transition-colors"
+                    >
+                      <Pencil className="h-3 w-3" />
+                      {editing ? copy.save : copy.edit}
+                    </button>
+                  }
+                />
 
-          {editing ? (
-            <div className="space-y-3 p-1">
-              <div>
-                <label className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
-                  {copy.name}
-                </label>
-                <Input value={name} onChange={(event) => setName(event.target.value)} className="mt-1 h-12 rounded-xl text-base" />
-              </div>
-              <div>
-                <label className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
-                  {copy.age}
-                </label>
-                <Input value={age} onChange={(event) => setAge(event.target.value)} className="mt-1 h-12 rounded-xl text-base" />
-              </div>
-              <Button onClick={handleSave} className="h-12 w-full rounded-xl font-bold">
-                {copy.saveChanges}
-              </Button>
-            </div>
-          ) : (
-            <ul className="divide-y divide-border">
-              <InfoRow Icon={User} label={copy.fullName} value={name} />
-              <InfoRow Icon={CalendarDays} label={copy.age} value={ageValue} />
-              <InfoRow Icon={IdCard} label={copy.patientId} value={patientId} />
-            </ul>
-          )}
-        </Card>
+                {editing ? (
+                  <div className="space-y-3 p-1">
+                    <div>
+                      <label className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                        {copy.name}
+                      </label>
+                      <Input value={name} onChange={(event) => setName(event.target.value)} className="mt-1 h-12 rounded-xl text-base" />
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                        {copy.age}
+                      </label>
+                      <Input value={age} onChange={(event) => setAge(event.target.value)} className="mt-1 h-12 rounded-xl text-base" />
+                    </div>
+                    <Button onClick={handleSave} className="h-12 w-full rounded-xl font-bold cursor-pointer">
+                      {copy.saveChanges}
+                    </Button>
+                  </div>
+                ) : (
+                  <ul className="divide-y divide-border">
+                    <InfoRow Icon={User} label={copy.fullName} value={name} />
+                    <InfoRow Icon={CalendarDays} label={copy.age} value={ageValue} />
+                    <InfoRow Icon={IdCard} label={copy.patientId} value={patientId} />
+                  </ul>
+                )}
+              </Card>
+
+              <Card>
+                <CardHeader Icon={Pencil} title={language === "ta" ? copy.settings : "Account"} />
+                <ul className="divide-y divide-border">
+                  <ActionRow Icon={User} label={copy.editProfile} onClick={() => setEditing(true)} />
+                  <ActionRow Icon={LogOut} label="Switch account" onClick={onLogout} />
+                </ul>
+              </Card>
+
+              <Card>
+                <CardHeader Icon={Type} title={language === "ta" ? "Appearance" : "Appearance"} />
+                <div className="flex items-start gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary">
+                    <Type className="h-5 w-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-semibold text-foreground">{language === "ta" ? "Font size" : "Font size"}</p>
+                    <p className="text-sm leading-6 text-muted-foreground">
+                      {language === "ta" ? "Adjust the app text size" : "Adjust the app text size"}
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-3 grid grid-cols-[repeat(auto-fit,minmax(108px,1fr))] gap-2">
+                  {fontSizeOptions.map((option) => (
+                    <button
+                      key={option.id}
+                      type="button"
+                      onClick={() => onFontSizeChange(option.id)}
+                      className={cn(
+                        "min-h-11 rounded-xl border px-2 py-2 text-sm font-extrabold leading-5 transition-colors cursor-pointer",
+                        fontSize === option.id
+                          ? "border-primary bg-primary text-primary-foreground"
+                          : "border-border bg-background text-foreground hover:bg-secondary"
+                      )}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              </Card>
+
+              <Card>
+                <CardHeader Icon={Mail} title={language === "ta" ? "Contact us" : "Contact us"} />
+                <p className="text-sm leading-6 text-muted-foreground">
+                  {language === "ta" ? "அமைப்புகள் அல்லது நினைவூட்டல்களில் உதவி தேவையா?" : "Need help with setup or reminders?"}
+                </p>
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => setContactOpen(true)}
+                    className="h-auto min-h-11 w-full whitespace-normal rounded-2xl px-3 py-2 text-center font-bold leading-5 cursor-pointer"
+                  >
+                    <Mail className="mr-2 h-4 w-4" />
+                    {language === "ta" ? "Contact Us" : "Contact Us"}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setTermsOpen(true)}
+                    className="h-auto min-h-11 w-full whitespace-normal rounded-2xl px-3 py-2 text-center font-bold leading-5 cursor-pointer"
+                  >
+                    <FileText className="mr-2 h-4 w-4" />
+                    {language === "ta" ? "Terms & Conditions" : "Terms & Conditions"}
+                  </Button>
+                </div>
+              </Card>
             </div>
 
             {/* Right Column on desktop */}
-            <div className="md:col-span-7 lg:col-span-8 space-y-5">
-
-        <Card>
-          <CardHeader Icon={Pencil} title={language === "ta" ? copy.settings : "Account"} />
-          <ul className="divide-y divide-border">
-            <ActionRow Icon={User} label={copy.editProfile} onClick={() => setEditing(true)} />
-            <ActionRow Icon={LogOut} label="Switch account" onClick={onLogout} />
-          </ul>
-        </Card>
-
-        <Card>
-          <CardHeader Icon={Bell} title={language === "ta" ? "எச்சரிக்கை அமைப்புகள்" : "Alert Settings"} />
-          <ul className="overflow-hidden rounded-2xl border border-border bg-card divide-y divide-border">
-            <ToggleRow
-              Icon={Bell}
-              label={language === "ta" ? "நினைவூட்டல்களை இயக்கவும்" : "Enable reminders"}
-              checked={remindersEnabled}
-              onChange={onRemindersEnabledChange}
-            />
+            <div className="md:col-span-6 lg:col-span-6 space-y-5">
+              <Card>
+                <CardHeader Icon={Bell} title={language === "ta" ? "எச்சரிக்கை அமைப்புகள்" : "Alert Settings"} />
+                <ul className="overflow-hidden rounded-2xl border border-border bg-card divide-y divide-border">
+                  <ToggleRow
+                    Icon={Bell}
+                    label={language === "ta" ? "நினைவூட்டல்களை இயக்கவும்" : "Enable reminders"}
+                    checked={remindersEnabled}
+                    onChange={onRemindersEnabledChange}
+                  />
             <ToggleRow
               Icon={Volume2}
               label={language === "ta" ? "ஒலி அறிவிப்புகள்" : "Sound alerts"}
@@ -417,61 +477,44 @@ const ProfileScreen = ({
         </Card>
 
         <Card>
-          <CardHeader Icon={Type} title={language === "ta" ? "Appearance" : "Appearance"} />
-          <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary">
-              <Type className="h-5 w-5" />
+          <CardHeader Icon={HeartPulse} title={language === "ta" ? "மருத்துவ விவரங்கள்" : "Health & Medical Profile"} />
+          <ul className="divide-y divide-border">
+            <InfoRow
+              Icon={User}
+              label={language === "ta" ? "முதன்மை மருத்துவர்" : "Primary Doctor"}
+              value="Dr. Rajesh Sharma, MD"
+            />
+            <InfoRow
+              Icon={Phone}
+              label={language === "ta" ? "அவசர தொடர்பு" : "Emergency Contact"}
+              value="+91 98765 43210 (Caregiver)"
+            />
+            <InfoRow
+              Icon={HeartPulse}
+              label={language === "ta" ? "இரத்த வகை" : "Blood Group"}
+              value="O+ Positive"
+            />
+            <InfoRow
+              Icon={ShieldCheck}
+              label={language === "ta" ? "ஒவ்வாமை" : "Known Allergies"}
+              value={language === "ta" ? "பென்சிலின் (மிதமானது)" : "Penicillin (Mild)"}
+            />
+          </ul>
+          <div className="mt-4 rounded-2xl border border-primary/20 bg-primary-soft/40 p-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75" />
+                  <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-success" />
+                </span>
+                <span className="text-xs font-bold text-foreground">
+                  {language === "ta" ? "ஸ்மார்ட் மருந்து பெட்டி" : "Smart Pill Box Hardware"}
+                </span>
+              </div>
+              <span className="rounded-full bg-success/20 px-2 py-0.5 text-[10px] font-extrabold text-success">
+                {language === "ta" ? "இணைக்கப்பட்டுள்ளது • 92%" : "Connected • 92%"}
+              </span>
             </div>
-            <div className="min-w-0">
-              <p className="font-semibold text-foreground">{language === "ta" ? "Font size" : "Font size"}</p>
-              <p className="text-sm leading-6 text-muted-foreground">
-                {language === "ta" ? "Adjust the app text size" : "Adjust the app text size"}
-              </p>
-            </div>
-          </div>
-          <div className="mt-3 grid grid-cols-[repeat(auto-fit,minmax(108px,1fr))] gap-2">
-            {fontSizeOptions.map((option) => (
-              <button
-                key={option.id}
-                type="button"
-                onClick={() => onFontSizeChange(option.id)}
-                className={cn(
-                  "min-h-11 rounded-xl border px-2 py-2 text-sm font-extrabold leading-5 transition-colors",
-                  fontSize === option.id
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : "border-border bg-background text-foreground hover:bg-secondary"
-                )}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
-        </Card>
-
-        <Card>
-          <CardHeader Icon={Mail} title={language === "ta" ? "Contact us" : "Contact us"} />
-          <p className="text-sm leading-6 text-muted-foreground">
-            {language === "ta" ? "அமைப்புகள் அல்லது நினைவூட்டல்களில் உதவி தேவையா?" : "Need help with setup or reminders?"}
-          </p>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => setContactOpen(true)}
-              className="h-auto min-h-11 w-full whitespace-normal rounded-2xl px-3 py-2 text-center font-bold leading-5"
-            >
-              <Mail className="mr-2 h-4 w-4" />
-              {language === "ta" ? "Contact Us" : "Contact Us"}
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setTermsOpen(true)}
-              className="h-auto min-h-11 w-full whitespace-normal rounded-2xl px-3 py-2 text-center font-bold leading-5"
-            >
-              <FileText className="mr-2 h-4 w-4" />
-              {language === "ta" ? "Terms & Conditions" : "Terms & Conditions"}
-            </Button>
           </div>
         </Card>
         </div>

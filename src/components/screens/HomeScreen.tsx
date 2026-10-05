@@ -582,7 +582,7 @@ const HomeScreen = ({
 
   return (
     <div className="flex-1 overflow-y-auto bg-page scrollbar-none md:pb-10">
-      <div className="hero-surface relative overflow-hidden rounded-b-[1.75rem] md:rounded-3xl md:mx-auto md:w-full md:max-w-5xl lg:max-w-6xl md:mt-4 bg-hero px-4 pb-11 md:pb-6 pt-3.5 md:pt-6 text-primary-foreground sm:px-5 md:px-8 shadow-sm">
+      <div className="hero-surface relative overflow-hidden rounded-b-[1.75rem] md:rounded-3xl md:mx-auto md:w-full md:max-w-6xl lg:max-w-7xl 2xl:max-w-[1440px] md:mt-4 bg-hero px-4 pb-11 md:pb-6 pt-3.5 md:pt-6 text-primary-foreground sm:px-5 md:px-8 lg:px-10 shadow-sm">
         <div className="mx-auto w-full max-w-xl md:max-w-none">
           <div className="relative flex items-center justify-between gap-3">
             <div className="min-w-0">
@@ -632,7 +632,7 @@ const HomeScreen = ({
         </div>
       </div>
 
-      <div className="mx-auto w-full max-w-xl md:max-w-5xl lg:max-w-6xl px-4 sm:px-5 md:px-8 md:mt-6">
+      <div className="mx-auto w-full max-w-xl md:max-w-6xl lg:max-w-7xl 2xl:max-w-[1440px] px-4 sm:px-5 md:px-8 lg:px-10 md:mt-6">
         <div className="md:grid md:grid-cols-12 md:gap-6 md:items-start space-y-3 md:space-y-0">
           {/* Main Column on desktop (8 cols on lg, 7 cols on md) */}
           <div className="md:col-span-7 lg:col-span-8 space-y-3 md:space-y-5">
@@ -801,11 +801,82 @@ const HomeScreen = ({
                   {language === "ta" ? "காண்க" : "View all"}
                 </button>
               </div>
-              <p className="text-xs text-muted-foreground leading-relaxed">
+              <p className="text-xs text-muted-foreground leading-relaxed mb-3">
                 {language === "ta"
                   ? "உங்கள் சமீபத்திய மருந்து நேரங்கள் மற்றும் விடுபட்ட அளவுகளை சரிபார்க்கவும்."
                   : "Review recent medicine administration times, missed doses, and daily trends."}
               </p>
+              
+              <div className="divide-y divide-border/60 border-t border-border/50">
+                {todayTrackedDoses.slice(0, 3).map(({ schedule, status: doseStatus }) => {
+                  const { medicineName, dosage } = splitScheduleName(schedule.name);
+                  return (
+                    <div key={schedule.id} className="py-2.5 flex items-center justify-between gap-2">
+                      <div className="min-w-0 flex-1">
+                        <p className="text-xs font-bold text-foreground truncate">{medicineName}</p>
+                        <p className="text-[11px] text-muted-foreground">{schedule.time} • {dosage}</p>
+                      </div>
+                      <span
+                        className={cn(
+                          "rounded-full px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wide shrink-0",
+                          doseStatus === "taken" && "bg-success/15 text-success",
+                          doseStatus === "missed" && "bg-destructive/15 text-destructive",
+                          doseStatus === "left" && "bg-primary-soft text-primary"
+                        )}
+                      >
+                        {doseStatus === "taken"
+                          ? language === "ta" ? "உட்கொண்டது" : "Taken"
+                          : doseStatus === "missed"
+                          ? language === "ta" ? "தவறியது" : "Missed"
+                          : language === "ta" ? "வரவிருப்பது" : "Upcoming"}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Medicine Supply & Refills status on desktop */}
+            <div className="hidden md:block rounded-2xl border border-border/60 bg-card p-4 shadow-card">
+              <div className="flex items-center justify-between gap-2 mb-3">
+                <div className="flex items-center gap-1.5">
+                  <Package className="h-4 w-4 text-primary" />
+                  <p className="text-xs font-extrabold uppercase tracking-wider text-foreground">
+                    {language === "ta" ? "மருந்து இருப்பு நிலை" : "Supply & Refill Status"}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => announceStatButton(copy.stats.medicines, "medicines")}
+                  className="text-[11px] font-bold text-primary hover:underline cursor-pointer"
+                >
+                  {totalMeds} {language === "ta" ? "மருந்துகள்" : "Meds"}
+                </button>
+              </div>
+
+              <div className="space-y-2.5">
+                {medicineSchedules.slice(0, 3).map((schedule) => {
+                  const { medicineName } = splitScheduleName(schedule.name);
+                  const isLow = schedule.stock <= 5;
+                  const percent = Math.min(100, Math.round((schedule.stock / 30) * 100));
+                  return (
+                    <div key={schedule.id} className="rounded-xl bg-muted/40 p-2.5">
+                      <div className="flex items-center justify-between text-xs font-bold mb-1">
+                        <span className="truncate text-foreground font-bold">{medicineName}</span>
+                        <span className={cn("text-[11px] font-extrabold", isLow ? "text-warning" : "text-muted-foreground")}>
+                          {schedule.stock} {language === "ta" ? "மீதம்" : "tablets left"}
+                        </span>
+                      </div>
+                      <div className="h-1.5 w-full rounded-full bg-border/80 overflow-hidden">
+                        <div
+                          className={cn("h-full rounded-full transition-all", isLow ? "bg-warning" : "bg-primary")}
+                          style={{ width: `${percent}%` }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>

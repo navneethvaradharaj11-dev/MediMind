@@ -11,6 +11,8 @@ import {
   Megaphone,
   Music,
   Pencil,
+  Sparkles,
+  CheckCircle2,
 } from "lucide-react";
 import ScreenHeader from "@/components/ScreenHeader";
 import SmartScheduleCalendar from "@/components/schedules/SmartScheduleCalendar";
@@ -281,7 +283,7 @@ const SettingsScreen = ({
   return (
     <div ref={screenRef} className="flex-1 overflow-y-auto bg-page text-foreground">
       <ScreenHeader title={copy.title} subtitle={copy.subtitle} />
-      <div className="mx-auto w-full max-w-xl md:max-w-5xl lg:max-w-6xl space-y-4 px-5 pb-28 md:pb-12 sm:px-6 md:px-8">
+      <div className="mx-auto w-full max-w-xl md:max-w-6xl lg:max-w-7xl 2xl:max-w-[1440px] space-y-4 px-5 pb-28 md:pb-12 sm:px-6 md:px-8 lg:px-10">
         <div className="md:grid md:grid-cols-12 md:gap-6 md:items-start space-y-4 md:space-y-0">
           <div className="md:col-span-6 lg:col-span-6 space-y-4">
         <section className="grid grid-cols-2 gap-3">
@@ -519,18 +521,6 @@ const SettingsScreen = ({
           </DialogContent>
         </Dialog>
 
-          </div>
-          <div className="md:col-span-6 lg:col-span-6 space-y-4">
-            <Section title={language === "ta" ? "Course calendar" : "Course calendar"}>
-          <SmartScheduleCalendar
-            language={language}
-            schedules={smartSchedules}
-            onCreateSchedule={onCreateSmartSchedule}
-            onUpdateDayStatus={onUpdateSmartScheduleDayStatus}
-            onRemoveSchedule={onRemoveSmartSchedule}
-          />
-        </Section>
-
         <Section title={copy.sections.reminderInterval}>
           <div className="rounded-2xl border border-border bg-card p-4 shadow-card">
             <div className="mb-3 flex items-center justify-between gap-3">
@@ -545,7 +535,7 @@ const SettingsScreen = ({
                   key={minutes}
                   onClick={() => updateSnoozeMinutes(minutes)}
                   className={cn(
-                    "min-h-11 rounded-xl border px-2 py-2.5 text-sm font-bold leading-5 transition-colors",
+                    "min-h-11 rounded-xl border px-2 py-2.5 text-sm font-bold leading-5 transition-colors cursor-pointer",
                     snoozeMinutes === minutes
                       ? "border-primary bg-primary text-primary-foreground"
                       : "border-border bg-background text-foreground hover:bg-secondary"
@@ -559,7 +549,7 @@ const SettingsScreen = ({
               <button
                 type="button"
                 onClick={() => updateSnoozeMinutes(snoozeMinutes - 1)}
-                className="flex h-11 items-center justify-center rounded-xl border border-border bg-background text-foreground transition-colors hover:bg-secondary"
+                className="flex h-11 items-center justify-center rounded-xl border border-border bg-background text-foreground transition-colors hover:bg-secondary cursor-pointer"
                 aria-label="Decrease snooze"
               >
                 <Minus className="h-4 w-4" />
@@ -579,7 +569,7 @@ const SettingsScreen = ({
               <button
                 type="button"
                 onClick={() => updateSnoozeMinutes(snoozeMinutes + 1)}
-                className="flex h-11 items-center justify-center rounded-xl border border-border bg-primary text-primary-foreground transition-opacity hover:opacity-90"
+                className="flex h-11 items-center justify-center rounded-xl border border-border bg-primary text-primary-foreground transition-opacity hover:opacity-90 cursor-pointer"
                 aria-label="Increase snooze"
               >
                 <Plus className="h-4 w-4" />
@@ -587,6 +577,38 @@ const SettingsScreen = ({
             </div>
           </div>
         </Section>
+
+        {/* Adherence & Medication Routine Tips */}
+        <div className="rounded-2xl border border-border/60 bg-card p-4 shadow-card">
+          <div className="flex items-center gap-2 mb-2">
+            <Sparkles className="h-4 w-4 text-primary" />
+            <h3 className="text-xs font-extrabold uppercase tracking-wider text-foreground">
+              {language === "ta" ? "மருந்து உட்கொள்ளும் வழிகாட்டுதல்" : "Medication & Timing Tips"}
+            </h3>
+          </div>
+          <ul className="space-y-2 text-xs text-muted-foreground">
+            <li className="flex items-start gap-2">
+              <CheckCircle2 className="h-3.5 w-3.5 text-success shrink-0 mt-0.5" />
+              <span>{language === "ta" ? "மருந்தை தினமும் அதே குறிப்பிட்ட நேரத்தில் உட்கொள்ளவும்." : "Take doses at consistent hours each day for maximum efficacy."}</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle2 className="h-3.5 w-3.5 text-success shrink-0 mt-0.5" />
+              <span>{language === "ta" ? "மருந்து அட்டவணையை உங்கள் ஸ்மார்ட் பெட்டியுடன் ஒத்திசைக்கவும்." : "Keep pill box synced to automatically log dispenser open events."}</span>
+            </li>
+          </ul>
+        </div>
+
+          </div>
+          <div className="md:col-span-6 lg:col-span-6 space-y-4">
+            <Section title={language === "ta" ? "Course calendar" : "Course calendar"}>
+              <SmartScheduleCalendar
+                language={language}
+                schedules={smartSchedules}
+                onCreateSchedule={onCreateSmartSchedule}
+                onUpdateDayStatus={onUpdateSmartScheduleDayStatus}
+                onRemoveSchedule={onRemoveSmartSchedule}
+              />
+            </Section>
           </div>
         </div>
       </div>
