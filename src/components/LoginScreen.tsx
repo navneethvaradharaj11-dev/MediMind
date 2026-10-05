@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AppLanguage } from "@/lib/appLanguage";
-import { findUserProfile, generatePatientId, saveUserProfile, UserProfile } from "@/lib/userProfile";
+import { findUserProfile, generatePatientId, saveUserProfile, UserProfile, DEFAULT_DEMO_PROFILE } from "@/lib/userProfile";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -327,6 +327,25 @@ const LoginScreen = ({ language = "en", onLogin, onToggleLanguage }: LoginScreen
               : mode === "signin"
                 ? copy.signInStart
                 : copy.signUpStart}
+          </Button>
+
+          <Button
+            type="button"
+            variant="outline"
+            disabled={loading}
+            onClick={() => {
+              setFullName(DEFAULT_DEMO_PROFILE.fullName);
+              setPassword(DEFAULT_DEMO_PROFILE.password);
+              setLoading(true);
+              setTimeout(() => {
+                setLoading(false);
+                toast.success(copy.welcomeToast(DEFAULT_DEMO_PROFILE.fullName));
+                onLogin(DEFAULT_DEMO_PROFILE);
+              }, 300);
+            }}
+            className="mt-3 h-12 w-full rounded-xl border border-primary/30 bg-primary/5 text-sm font-bold text-primary hover:bg-primary/10 transition-colors"
+          >
+            {language === "ta" ? "⚡ விரைவு டெமோ கணக்கு (Navneeth)" : "⚡ Quick Demo Patient (Navneeth)"}
           </Button>
 
           <p className="mt-4 text-center text-xs font-medium text-muted-foreground md:hidden">{copy.localMode}</p>

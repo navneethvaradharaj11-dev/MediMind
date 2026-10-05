@@ -20,17 +20,30 @@ export const generatePatientId = (name: string) => {
   return `MM-${(seed % 9000 + 1000).toString().padStart(4, "0")}`;
 };
 
+export const DEFAULT_DEMO_PROFILE: UserProfile = {
+  fullName: "Navneeth",
+  age: "68",
+  patientId: "MM-1988",
+  password: "1234",
+};
+
 export const loadUserProfiles = (): UserProfile[] => {
-  if (typeof window === "undefined") return [];
+  if (typeof window === "undefined") return [DEFAULT_DEMO_PROFILE];
 
   try {
     const stored = window.localStorage.getItem(USER_PROFILES_STORAGE_KEY);
-    if (!stored) return [];
+    if (!stored) return [DEFAULT_DEMO_PROFILE];
     const parsed = JSON.parse(stored) as UserProfile[];
-    return Array.isArray(parsed) ? parsed : [];
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      if (!parsed.some((p) => normalizeName(p.fullName) === normalizeName(DEFAULT_DEMO_PROFILE.fullName))) {
+        return [DEFAULT_DEMO_PROFILE, ...parsed];
+      }
+      return parsed;
+    }
+    return [DEFAULT_DEMO_PROFILE];
   } catch (error) {
     console.error("Could not load user profiles:", error);
-    return [];
+    return [DEFAULT_DEMO_PROFILE];
   }
 };
 

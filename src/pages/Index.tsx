@@ -238,27 +238,7 @@ const Index = () => {
   const [snoozeMinutes, setSnoozeMinutes] = useState(loadSnoozeMinutes);
   const activeMedicineReminderKeyRef = useRef<string | null>(null);
   const triggeredMedicineReminderKeysRef = useRef<Set<string>>(new Set());
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(() => {
-    const active = loadActiveUserProfile();
-    if (active) return active;
-
-    const defaultProfile = {
-      fullName: "Navneeth",
-      age: "68",
-      patientId: "MM-1988",
-      password: "1234"
-    };
-
-    if (typeof window !== "undefined") {
-      try {
-        window.localStorage.setItem("gentle-dose-active-profile-v1", JSON.stringify(defaultProfile));
-        window.localStorage.setItem("gentle-dose-user-profiles-v1", JSON.stringify([defaultProfile]));
-      } catch (e) {
-        console.error("Failed to save default profile", e);
-      }
-    }
-    return defaultProfile;
-  });
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [fontSize, setFontSize] = useState<FontSizePreference>(() => {
     if (typeof window === "undefined") return "medium";
